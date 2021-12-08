@@ -28,18 +28,33 @@ pip install .
 ## Usage
 
 ```python
-import pyopenmotics
+from pyhaopenmotics import CloudClient
 
-om_cloud = BackendClient("client_id", "client_secret")
-om_cloud.get_token()
+async def main():
+    async with CloudClient(
+        client_id,
+        client_secret,
+    ) as bc:
+        await bc.get_token()
 
-installs = om_cloud.base.installations.all()
-for install in installs:
-    print("- {}".format(install))
-print(install["id"])
+    installations = await bc.installations.get_all()
+    print(installations)
 
-outputs = om_cloud.base.installations.status_by_id(install["id"])
-print(outputs)
+    i_id = installations[0].id
+
+    installation = await bc.installations.get_by_id(i_id)
+    print(installation)
+    print(installation.id)
+    print(installation.name)
+
+    outputs = await bc.outputs.get_all(i_id)
+    print(outputs)
+
+    print(outputs[0].state)
+
+if __name__ == "__main__":
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
 ```
 
 ## Changelog & Releases
