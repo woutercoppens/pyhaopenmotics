@@ -11,7 +11,6 @@ How to use this script:
 
 import asyncio
 
-# UNCOMMENT THIS TO SEE ALL THE HTTPX INTERNAL LOGGING
 import logging
 import os
 
@@ -20,6 +19,7 @@ from httpx import AsyncClient
 
 from pyhaopenmotics import CloudClient
 
+# UNCOMMENT THIS TO SEE ALL THE HTTPX INTERNAL LOGGING
 log = logging.getLogger()
 log.setLevel(logging.DEBUG)
 log_format = logging.Formatter("[%(asctime)s] [%(levelname)s] - %(message)s")
