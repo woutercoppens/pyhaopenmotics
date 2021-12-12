@@ -1,24 +1,21 @@
-""" Module containing the base of an output."""
-
+"""Module containing the base of an output."""
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, List
 
-from cached_property import cached_property
-
-from ..models.groupaction import GroupAction
+from pyhaopenmotics.models.groupaction import GroupAction
 
 if TYPE_CHECKING:
-    from .base import BaseClient  # pylint: disable=R0401
+    from pyhaopenmotics.base import BaseClient  # pylint: disable=R0401
 
 
-class GroupActionsCtrl:
+class GroupActionsCtrl:  # noqa: SIM119
     """Object holding information of the OpenMotics groupactions.
 
     All actions related to groupaction or a specific groupaction.
     """
 
-    def __init__(self, baseclient: BaseClient):
+    def __init__(self, baseclient: BaseClient) -> None:
         """Init the installations object.
 
         Args:
@@ -30,7 +27,7 @@ class GroupActionsCtrl:
         self,
         installation_id: int,
         groupactions_filter: str | None = None,
-    ) -> dict[str, Any]:
+    ) -> List[GroupAction]:
         """Call lists all GroupAction objects.
 
         Args:
@@ -62,20 +59,20 @@ class GroupActionsCtrl:
         path = f"/base/installations/{installation_id}/groupactions"
         if groupactions_filter:
             query_params = {"filter": groupactions_filter}
-            body = await self.baseclient._get(
+            body = await self.baseclient.get(
                 path=path,
                 params=query_params,
             )
         else:
-            body = await self.baseclient._get(path)
+            body = await self.baseclient.get(path)
 
-        return [GroupAction(**grpctn) for grpctn in body["data"]]
+        return [GroupAction(**grpctn) for grpctn in body["data"]]  # type: ignore
 
     async def get_by_id(
         self,
         installation_id: int,
         groupaction_id: int,
-    ) -> dict[str, Any]:
+    ) -> GroupAction:
         """Get a specified groupaction object.
 
         Args:
@@ -86,10 +83,10 @@ class GroupActionsCtrl:
             Returns a groupaction with id
         """
         path = f"/base/installations/{installation_id}/groupactions/{groupaction_id}"
-        body = await self.baseclient._get(path)
-        output = body["data"]
+        body = await self.baseclient.get(path)
+        grpctn = body["data"]
 
-        return Ouput(**output)
+        return GroupAction(**grpctn)  # type: ignore
 
     async def trigger(
         self,
@@ -110,7 +107,7 @@ class GroupActionsCtrl:
             f"/base/installations/{installation_id}"
             f"/groupactions/{groupaction_id}/trigger"
         )
-        return await self.baseclient._post(path)
+        return await self.baseclient.post(path)
 
     async def by_usage(
         self,
@@ -131,7 +128,7 @@ class GroupActionsCtrl:
         """
         path = f"/base/installations/{installation_id}/groupactions"
         query_params = {"usage": groupaction_usage.upper()}
-        return await self.baseclient._get(path, params=query_params)
+        return await self.baseclient.get(path, params=query_params)
 
     async def scenes(self, installation_id: int) -> dict[str, Any]:
         """Return all scenes object.

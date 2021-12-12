@@ -1,18 +1,13 @@
 """Output Model for the OpenMotics API."""
 from __future__ import annotations
 
-from abc import ABC
-from dataclasses import dataclass
-from enum import auto
-from typing import Any, List, Optional, Union
+from typing import List, Optional
 
-from pydantic import BaseModel, Field, validator
-
-from .util import StrEnum
+from pydantic import BaseModel, Field
 
 
 class Output(BaseModel):
-    """Object holding an OpenMotics Output.
+    """Class holding an OpenMotics Output.
 
     # noqa: E800
      # [{
@@ -35,65 +30,50 @@ class Output(BaseModel):
      #     ...
     """
 
-    id: int
-    name: str
+    # pylint: disable=too-many-instance-attributes
+    id: int  # noqa:A003
+    name: Optional[str] = None
     output_type: str = Field(None, alias="type")
-    capabilities: List = None
+    capabilities: Optional[List] = None
     location: Optional[dict] = None
     installation_id: Optional[int] = None
     gateway_id: Optional[int] = None
     floor_id: Optional[int] = None
     room_id: Optional[int] = None
     metadata: Optional[dict] = None
-    status: dict
+    status: Optional[dict] = None
     last_state_change: Optional[float] = None
     version: Optional[str] = Field(None, alias="_version")
 
-    def __eq__(self, other: Output):
-        if not isinstance(other, Output):
-            return False
-
-        return (
-            # self.installation_id == other.installation_id
-            self.id == other.id
-            and self.name == other.name
-            and self.output_type == other.output_type
-            and self.capabilities == other.capabilities
-            and self.location == other.location
-            and self.installation_id == other.installation_id
-            and self.gateway_id == other.gateway_id
-            and self.floor_id == other.floor_id
-            and self.metadata == other.metadata
-            and self.status == other.status
-            and self.last_state_change == other.last_state_change
-            and self.version == other.version
-        )
+    _brightness: Optional[int] = None
 
     def __str__(self):
+        """Represent the class objects as a string.
+
+        Returns:
+            string
+
+        """
         return f"{self.id}_{self.name}_{self.output_type}"
 
     @property
     def state(self):
-        if self.status["on"] is True:
-            return True
-        else:
-            return False
+        """Return the state of the output.
+
+        Returns:
+            state
+        """
+        return self.status["on"]
 
     @property
     def brightness(self):
+        """Return the brightness of the output.
+
+        Returns:
+            brightness
+        """
         try:
             self._brightness = self.status["value"]
         except KeyError:
             self._brightness = None
         return self._brightness
-
-
-class Status(BaseModel):
-    """Object holding the status of an Output.
-
-    'status': {'on': False, 'locked': False, 'manual_override': False},
-    """
-
-    on: bool
-    locked: bool
-    manual_override: bool

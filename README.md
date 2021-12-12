@@ -30,6 +30,7 @@ pip install .
 ```python
 from pyhaopenmotics import CloudClient
 
+
 async def main():
     async with CloudClient(
         client_id,
@@ -51,6 +52,7 @@ async def main():
     print(outputs)
 
     print(outputs[0].state)
+
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()

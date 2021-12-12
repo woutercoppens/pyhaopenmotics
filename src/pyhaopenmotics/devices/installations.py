@@ -1,24 +1,22 @@
-""" Module containing the base of an installation."""
+"""Module containing the base of an installation."""
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, List
 
-from cached_property import cached_property
-
-from ..models.installation import Installation
+from pyhaopenmotics.models.installation import Installation
 
 if TYPE_CHECKING:
-    from .base import BaseClient  # pylint: disable=R0401
+    from pyhaopenmotics.base import BaseClient  # pylint: disable=R0401
 
 
-class InstallationsCtrl:
+class InstallationsCtrl:  # noqa: SIM119
     """Object holding information of the OpenMotics installation.
 
     All actions related to Installations or a specific Installation.
     """
 
-    def __init__(self, baseclient: BaseClient):
+    def __init__(self, baseclient: BaseClient) -> None:
         """Init the installations object.
 
         Args:
@@ -29,7 +27,7 @@ class InstallationsCtrl:
     async def get_all(  # noqa: A003
         self,
         installation_filter: str | None = None,
-    ) -> dict[str, Any]:
+    ) -> List[Installation]:
         """List all Installation objects.
 
         Args:
@@ -51,14 +49,16 @@ class InstallationsCtrl:
         path = "/base/installations"
         if installation_filter:
             query_params = {"filter": installation_filter}
-            body = await self.baseclient._get(
+            body = await self.baseclient.get(
                 path=path,
                 params=query_params,
             )
         else:
-            body = await self.baseclient._get(path)
+            body = await self.baseclient.get(path)
 
-        return [Installation(**installation) for installation in body["data"]]
+        return [
+            Installation(**installation) for installation in body["data"]
+        ]  # type: ignore
 
     async def get_by_id(
         self,
@@ -74,7 +74,7 @@ class InstallationsCtrl:
 
         """
         path = f"/base/installations/{installation_id}"
-        body = await self.baseclient._get(path)
+        body = await self.baseclient.get(path)
         installation = body["data"]
 
-        return Installation(**installation)
+        return Installation(**installation)  # type: ignore

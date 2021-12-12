@@ -1,24 +1,22 @@
-""" Module containing the base of an output."""
-
+"""Module containing the base of an output."""
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+import json
+from typing import TYPE_CHECKING, Any, List
 
-from cached_property import cached_property
-
-from ..models.shutter import Shutter
+from pyhaopenmotics.models.shutter import Shutter
 
 if TYPE_CHECKING:
-    from .base import BaseClient  # pylint: disable=R0401
+    from pyhaopenmotics.base import BaseClient  # pylint: disable=R0401
 
 
-class ShuttersCtrl:
+class ShuttersCtrl:  # noqa: SIM119
     """Object holding information of the OpenMotics outputs.
 
     All actions related to Outputs or a specific Output.
     """
 
-    def __init__(self, baseclient: BaseClient):
+    def __init__(self, baseclient: BaseClient) -> None:
         """Init the installations object.
 
         Args:
@@ -26,11 +24,11 @@ class ShuttersCtrl:
         """
         self.baseclient = baseclient
 
-    async def get_all(  # noqa: A003
+    async def get_all(  # type: ignore
         self,
         installation_id: int,
         shutter_filter: str | None = None,
-    ) -> dict[str, Any]:
+    ) -> List[Shutter]:
         """List all Shutter objects.
 
         Args:
@@ -48,20 +46,20 @@ class ShuttersCtrl:
         path = f"/base/installations/{installation_id}/shutters"
         if shutter_filter:
             query_params = {"filter": shutter_filter}
-            body = await self.baseclient._get(
+            body = await self.baseclient.get(
                 path=path,
                 params=query_params,
             )
         else:
-            body = await self.baseclient._get(path)
+            body = await self.baseclient.get(path)
 
-        return [Shutter(**shutter) for shutter in body["data"]]
+        return [Shutter(**shutter) for shutter in body["data"]]  # type: ignore
 
-    async def get_by_id(
+    async def get_by_id(  # type: ignore
         self,
         installation_id: int,
         shutter_id: int,
-    ) -> dict[str, Any]:
+    ) -> Shutter:
         """Get a specified Shutter object.
 
         Args:
@@ -72,10 +70,10 @@ class ShuttersCtrl:
             Returns a shutter with id
         """
         path = f"/base/installations/{installation_id}/shutters/{shutter_id}"
-        body = await self.baseclient._get(path)
+        body = await self.baseclient.get(path)
         shutter = body["data"]
 
-        return Shutter(**shutter)
+        return Shutter(**shutter)  # type: ignore
 
     async def move_up(
         self,
@@ -92,7 +90,7 @@ class ShuttersCtrl:
             Returns a shutter with id
         """
         path = f"/base/installations/{installation_id}/shutters/{shutter_id}/up"
-        return await self.baseclient._post(path)
+        return await self.baseclient.post(path)
 
     async def move_down(
         self,
@@ -109,7 +107,7 @@ class ShuttersCtrl:
             Returns a shutter with id
         """
         path = f"/base/installations/{installation_id}/shutters/{shutter_id}/down"
-        return await self.baseclient._post(path)
+        return await self.baseclient.post(path)
 
     async def stop(
         self,
@@ -126,7 +124,7 @@ class ShuttersCtrl:
             Returns a shutter with id
         """
         path = f"/base/installations/{installation_id}/shutters/{shutter_id}/stop"
-        return await self.baseclient._post(path)
+        return await self.baseclient.post(path)
 
     async def change_position(
         self,
@@ -158,7 +156,7 @@ class ShuttersCtrl:
                 "position": position,
             }
         )
-        return await self.baseclient._post(path, json=payload)
+        return await self.baseclient.post(path, json=payload)
 
     async def change_relative_position(
         self,
@@ -190,7 +188,7 @@ class ShuttersCtrl:
                 "offset": offset,
             }
         )
-        return await self.baseclient._post(path, json=payload)
+        return await self.baseclient.post(path, json=payload)
 
     async def lock(
         self,
@@ -214,7 +212,7 @@ class ShuttersCtrl:
             Returns the lock_type as response.
         """
         path = f"/base/installations/{installation_id}/shutters/{shutter_id}/lock"
-        return await self.baseclient._post(path)
+        return await self.baseclient.post(path)
 
     async def unlock(
         self,
@@ -231,7 +229,7 @@ class ShuttersCtrl:
             Returns a shutter with id
         """
         path = f"/base/installations/{installation_id}/shutters/{shutter_id}/unlock"
-        return await self.baseclient._post(path)
+        return await self.baseclient.post(path)
 
     async def preset(
         self,
@@ -259,7 +257,7 @@ class ShuttersCtrl:
                 "position": position,
             }
         )
-        return await self.baseclient._post(path, json=payload)
+        return await self.baseclient.post(path, json=payload)
 
     async def move_to_preset(
         self,
@@ -278,4 +276,4 @@ class ShuttersCtrl:
             Returns a shutter with id
         """
         path = f"/base/installations/{installation_id}/shutters/{shutter_id}/move"
-        return await self.baseclient._post(path)
+        return await self.baseclient.post(path)

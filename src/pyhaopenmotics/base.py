@@ -2,10 +2,9 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
-import cached_property
-from httpx import URL, AsyncClient, Response
+from httpx import AsyncClient
 from tenacity import (
     retry,
     retry_if_exception_type,
@@ -44,10 +43,18 @@ class BaseClient:
 
         Uses the provided parameters when making API calls towards the
         OpenMotics API.
+
+        Args:
+            host: hostname or ip
+            ssl: use ssl or not
+            port: port
         """
+        self.headers = {
+            "Accept": "application/json",
+        }
 
         self._client = None
-        self._session: AsyncClient = None
+        self._session: AsyncClient = None  # type: ignore
         self._close_session = False
 
         if host is None:
@@ -64,8 +71,40 @@ class BaseClient:
         self.groupactions = GroupActionsCtrl(baseclient=self)
 
     def _get_url(self, endpoint):
-        """Join endpoint to url."""
-        return "{}{}{}".format(self.url, PREFIX, endpoint)
+        """Join endpoint to url.
+
+        Args:
+            endpoint: extra path
+
+        Returns:
+            full url path
+        """
+        return f"{self.url}{PREFIX}{endpoint}"
+
+    async def get_token(self):
+        """Get Token.
+
+        Subclasses should implement this!
+
+        Raises:
+            NotImplementedError: blabla
+        """
+        raise NotImplementedError()
+
+    async def token_saver(self, token, **kwargs):
+        # def token_saver(self, token, refresh_token=None, access_token=None):
+        """Save Token.
+
+        Subclasses should implement this!
+
+        Args:
+            token: str
+            **kwargs: any
+
+        Raises:
+            NotImplementedError: blabla
+        """
+        raise NotImplementedError()  # noqa: DAR401
 
     @retry(
         retry=retry_if_exception_type(RetryableException),
@@ -73,19 +112,26 @@ class BaseClient:
         wait=wait_random_exponential(multiplier=1, max=30),
         reraise=True,
     )
-    async def _post(self, path: str, data: dict, **kwargs) -> Any:
-        """
-        Makes post request using the underlying httpx AsyncClient, with the defaut timeout of 15s.
+    async def post(self, path: str, **kwargs) -> dict[str, Any]:
+        """Make post request using the underlying httpx AsyncClient.
 
-        In case of retryable exceptions, requests are retryed for up to 10 times or 5 minutes.
+        with the default timeout of 15s. in case of retryable exceptions,
+        requests are retryed for up to 10 times or 5 minutes.
+
+        Args:
+            path: path
+            **kwargs: extra args
+
+        Returns:
+            response json or text
         """
         uri = self._get_url(path)
 
         with client_error_handler():
             resp = await self._session.post(
                 uri,
-                data=data,
                 timeout=15.0,
+                headers=self.headers,
                 **kwargs,
             )
 
@@ -95,7 +141,7 @@ class BaseClient:
             response_data = resp.json()
             return response_data
 
-        return resp.text()
+        return resp.text()  # type: ignore
 
     @retry(
         retry=retry_if_exception_type(RetryableException),
@@ -103,19 +149,20 @@ class BaseClient:
         wait=wait_random_exponential(multiplier=1, max=30),
         reraise=True,
     )
-    async def _get(self, path: str, **kwargs) -> Any:
-        """
-        Makes get request using the underlying httpx AsyncClient, with the defaut timeout of 15s.
+    async def get(self, path: str, **kwargs) -> dict[str, Any]:
+        """Make get request using the underlying httpx AsyncClient.
 
-        In case of retryable exceptions, requests are retryed for up to 10 times or 5 minutes.
+        with the default timeout of 15s. In case of retryable exceptions,
+        requests are retryed for up to 10 times or 5 minutes.
+
+        Args:
+            path: path
+            **kwargs: extra args
+
+        Returns:
+            response json or text
         """
         uri = self._get_url(path)
-
-        self.headers = {
-            "Accept": "application/json",
-            # "Content-Type": "application/json"
-        }
-        # self._client.headers.update(self.headers)
 
         with client_error_handler():
             resp = await self._session.get(
@@ -130,17 +177,26 @@ class BaseClient:
         if "application/json" in resp.headers.get("Content-Type", ""):
             response_data = resp.json()
             return response_data
-        return resp.text()
+
+        return resp.text()  # type: ignore
 
     async def close(self) -> None:
         """Close open client session."""
         if self._session and self._close_session:
             await self._session.aclose()
 
-    async def __aenter__(self) -> Toon:
-        """Async enter."""
+    async def __aenter__(self) -> BaseClient:
+        """Async enter.
+
+        Returns:
+            Baseclient
+        """
         return self
 
     async def __aexit__(self, *exc_info) -> None:
-        """Async exit."""
+        """Async exit.
+
+        Args:
+            *exc_info: obj
+        """
         await self.close()

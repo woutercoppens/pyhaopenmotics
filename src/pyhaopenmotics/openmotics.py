@@ -2,46 +2,17 @@
 
 from __future__ import annotations
 
-import json
-from contextlib import asynccontextmanager
-from datetime import datetime
-from enum import Enum
-from typing import AsyncGenerator, Callable, Dict, Union
-
-from authlib.integrations.httpx_client import (
-    AsyncAssertionClient,
+from authlib.integrations.httpx_client import (  # type: ignore
     AsyncOAuth2Client,
     OAuthError,
 )
-from httpx import AsyncClient
-from oauthlib.oauth2 import (
+from oauthlib.oauth2 import (  # type: ignore
     BackendApplicationClient,
     LegacyApplicationClient,
-    ServiceApplicationClient,
 )
 
 from .base import BaseClient
 from .errors import ApiException, RequestUnauthorizedException
-
-# @asynccontextmanager
-# async def openmotics_client(
-#     client_id: str,
-#     client_secret: str,
-#     token: Token,
-#     on_token_update: Callable[[Token], None],
-# ) -> AsyncGenerator[OutputsClient, None]:
-#     client = AsyncClient()
-#     token_store = Union[
-#         CloudTokenStore(client_id, client_secret, token, on_token_update),
-#         LocalTokenStore(username, password, token, on_token_update),
-#     ]
-
-#     c = OpenMoticsClient(client, token_store)
-
-#     try:
-#         yield c
-#     finally:
-#         await client.aclose()
 
 
 class CloudClient(BaseClient):
@@ -72,6 +43,8 @@ class CloudClient(BaseClient):
             update_token=self.token_saver,
         )
 
+        self.token = None
+
     def token_saver(self, token, **kwargs):
         """Save the token to self.token.
 
@@ -85,8 +58,8 @@ class CloudClient(BaseClient):
         """Get a new token.
 
         Raises:
-            OpenMoticsAuthenticationError: blabla
-            OpenMoticsError: blabla
+            RequestUnauthorizedException: blabla
+            ApiException: blabla
         """
         print(self.token_url)
         try:
@@ -101,7 +74,9 @@ class CloudClient(BaseClient):
         except Exception as exc:  # pylint: disable=broad-except
             raise ApiException(
                 f"Unknown error occurred while communicating with the OpenMotics "
-                f"API: {exc}"
+                f"API: {exc}",
+                None,
+                None,
             ) from exc
 
         return
@@ -111,15 +86,16 @@ class LocalGatewayClient(BaseClient):
     """Doc String."""
 
     # NOT TESTED
-    def __init__(self, username, password, **kwargs):
+    def __init__(self, host, username, password, **kwargs):
         """Init the LegacyClient object.
 
         Args:
+            host: str
             username: str
             password: str
             **kwargs: other arguments
         """
-        super().__init__(**kwargs)
+        super().__init__(host=host, **kwargs)
 
         self.username = username
         self.password = password
@@ -136,12 +112,14 @@ class LocalGatewayClient(BaseClient):
             update_token=self.token_saver,
         )
 
+        self.token = None
+
     async def get_token(self):
         """Get a new token.
 
         Raises:
-            OpenMoticsAuthenticationError: blabla
-            OpenMoticsError: blabla
+            RequestUnauthorizedException: blabla
+            ApiException: blabla
         """
         try:
             self.token = await self._session.fetch_token(
@@ -156,7 +134,9 @@ class LocalGatewayClient(BaseClient):
         except Exception as exc:  # pylint: disable=broad-except
             raise ApiException(
                 f"Unknown error occurred while communicating with the OpenMotics "
-                f"API: {exc}"
+                f"API: {exc}",
+                None,
+                None,
             ) from exc
 
         return

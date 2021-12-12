@@ -1,14 +1,9 @@
 """Output Model for the OpenMotics API."""
 from __future__ import annotations
 
-from abc import ABC
-from dataclasses import dataclass
-from enum import auto
-from typing import Any, List, Optional, Union
+from typing import Optional
 
-from pydantic import BaseModel, Field, validator
-
-from .util import StrEnum
+from pydantic import BaseModel, Field
 
 
 class Shutter(BaseModel):
@@ -27,7 +22,8 @@ class Shutter(BaseModel):
     #     "up_down_config": <up down configuration>
     # },
     # "id": <id>,
-    # "capabilities": ["UP_DOWN", "POSITION", "RELATIVE_POSITION", "HW_LOCK"|"CLOUD_LOCK", "PRESET", "CHANGE_PRESET"],
+    # "capabilities": ["UP_DOWN", "POSITION", "RELATIVE_POSITION",
+    #          "HW_LOCK"|"CLOUD_LOCK", "PRESET", "CHANGE_PRESET"],
     # "location": {
     #     "floor_coordinates": {
     #         "x": null | <x coordinate>,
@@ -48,34 +44,34 @@ class Shutter(BaseModel):
     # }
     """
 
-    id: int
-    name: str
+    # pylint: disable=too-many-instance-attributes
+    id: int  # noqa:A003
+    name: Optional[str] = None
     configuration: Optional[dict] = None
     location: Optional[dict] = None
     capabilities: Optional[int] = None
-    status: dict
+    status: Optional[dict] = None
     version: Optional[str] = Field(None, alias="_version")
 
-    def __eq__(self, other: Shutter):
-        if not isinstance(other, Shutter):
-            return False
-
-        return (
-            # self.installation_id == other.installation_id
-            self.id == other.id
-            and self.name == other.name
-            and self.configuration == other.configuration
-            and self.capabilities == other.capabilities
-            and self.location == other.location
-            and self.status == other.status
-            and self.version == other.version
-        )
+    _state: Optional[bool] = None
+    _position: Optional[str] = None
 
     def __str__(self):
+        """Represent the class objects as a string.
+
+        Returns:
+            string
+
+        """
         return f"{self.id}_{self.name}"
 
     @property
     def state(self):
+        """Return state of a shutter.
+
+        Returns:
+            bool
+        """
         try:
             self._state = self.status["state"]
         except KeyError:
@@ -84,6 +80,11 @@ class Shutter(BaseModel):
 
     @property
     def position(self):
+        """Return position of a shutter.
+
+        Returns:
+            position
+        """
         try:
             self._position = self.status["position"]
         except KeyError:

@@ -2,12 +2,13 @@
 # noqa: E800
 
 """
-Cloud example.
+Local Example.
 
 How to use this script:
     pip install python-dotenv
-    export CLIENT_ID="dnfqsdfjqsjfqsdjfqf"
-    export CLIENT_SECRET="djfqsdkfjqsdkfjqsdkfjqsdkfjkqsdjfkjdkfqjdskf"
+    export LOCAL_HOST='192.168.0.2'
+    export USERNAME="dnfqsdfjqsjfqsdjfqf"
+    export PASSWORD="djfqsdkfjqsdkfjqsdkfjqsdkfjkqsdjfkjdkfqjdskf"
     python cloud_example.py
 """
 
@@ -18,7 +19,7 @@ import os
 
 from dotenv import load_dotenv
 
-from pyhaopenmotics import CloudClient
+from pyhaopenmotics import LocalGatewayClient
 
 # UNCOMMENT THIS TO SEE ALL THE HTTPX INTERNAL LOGGING
 log = logging.getLogger()
@@ -32,14 +33,16 @@ log.addHandler(console)
 
 load_dotenv()
 
-client_id = os.environ["CLIENT_ID"]
-client_secret = os.environ["CLIENT_SECRET"]
+local_host = os.environ["LOCAL_HOST"]
+username = os.environ["USERNAME"]
+password = os.environ["PASSWORD"]
 
 
 async def main():
-    async with CloudClient(
-        client_id,
-        client_secret,
+    async with LocalGatewayClient(
+        host=local_host,
+        username=username,
+        password=password,
     ) as client:
         await client.get_token()
 

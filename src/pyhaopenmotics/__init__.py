@@ -14,7 +14,7 @@ from .errors import (
     RetryableException,
     UnsuportedArgumentsException,
 )
-from .openmotics import CloudClient, LocalGatewayClient  # openmotics_client,
+from .openmotics import CloudClient, LocalGatewayClient
 
 __all__ = [
     "CloudClient",
@@ -31,5 +31,4 @@ __all__ = [
     "RequestUnauthorizedException",
     "RetryableException",
     "UnsuportedArgumentsException",
-    "openmotics_client",
 ]

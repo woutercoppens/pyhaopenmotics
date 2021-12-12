@@ -1,14 +1,9 @@
 """Installation Model for the OpenMotics API."""
 from __future__ import annotations
 
-from abc import ABC
-from dataclasses import dataclass
-from enum import auto
-from typing import Any, List, Optional, Union
+from typing import Optional
 
-from pydantic import BaseModel, Field, validator
-
-from .util import StrEnum
+from pydantic import BaseModel, Field
 
 
 class Installation(BaseModel):
@@ -46,8 +41,8 @@ class Installation(BaseModel):
     # }
     """
 
-    # installation_id: Union[int,str] = Field(..., alias="id")
-    id: Optional[int] = None
+    # pylint: disable=too-many-instance-attributes
+    id: int  # noqa:A003
     name: Optional[str] = None
     description: Optional[str] = None
     gateway_model: Optional[str] = None
@@ -61,25 +56,12 @@ class Installation(BaseModel):
     flags: Optional[dict] = None
     features: Optional[dict] = None
 
-    def __eq__(self, other: Installation):
-        if not isinstance(other, Installation):
-            return False
-
-        return (
-            # self.installation_id == other.installation_id
-            self.id == other.id
-            and self.name == other.name
-            and self.description == other.description
-            and self.acl == other.acl
-            and self.version == other.version
-            and self.user_role == other.user_role
-            and self.registration_key == other.registration_key
-            and self.platform == other.platform
-            and self.building_roles == other.building_roles
-            and self.network == other.network
-            and self.flags == other.flags
-            and self.features == other.features
-        )
-
     def __str__(self):
+        """Represent the class objects as a string.
+
+        Returns:
+            string
+
+        """
+
         return f"{self.id}_{self.name}"
