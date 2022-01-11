@@ -64,7 +64,7 @@ darglint = "^1.8.1"
 safety = "^1.10.3"
 codespell = "^2.1.0"
 bandit = "^1.7.1"
-respx = "^0.19.0"
+respx = "^0.19.1"
 
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/woutercoppens/pyhaopenmotics/issues"
