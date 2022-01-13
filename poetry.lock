@@ -409,14 +409,14 @@ test = ["coverage", "coveralls", "mock", "pytest", "pytest-cov"]
 
 [[package]]
 name = "flake8-comprehensions"
-version = "3.7.0"
+version = "3.8.0"
 description = "A flake8 plugin to help you write better list/set/dict comprehensions."
 category = "dev"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [package.dependencies]
-flake8 = ">=3.0,<3.2.0 || >3.2.0,<5"
+flake8 = ">=3.0,<3.2.0 || >3.2.0"
 
 [[package]]
 name = "flake8-docstrings"
@@ -467,7 +467,7 @@ flake8 = "*"
 
 [[package]]
 name = "flake8-simplify"
-version = "0.14.2"
+version = "0.14.5"
 description = "flake8 plugin which checks for code that can be simplified"
 category = "dev"
 optional = false
@@ -936,7 +936,7 @@ use_chardet_on_py3 = ["chardet (>=3.0.2,<5)"]
 
 [[package]]
 name = "respx"
-version = "0.19.0"
+version = "0.19.1"
 description = "A utility for mocking out the Python HTTPX and HTTP Core libraries."
 category = "dev"
 optional = false
@@ -1476,8 +1476,8 @@ flake8-builtins = [
     {file = "flake8_builtins-1.5.3-py2.py3-none-any.whl", hash = "sha256:7706babee43879320376861897e5d1468e396a40b8918ed7bccf70e5f90b8687"},
 ]
 flake8-comprehensions = [
-    {file = "flake8-comprehensions-3.7.0.tar.gz", hash = "sha256:6b3218b2dde8ac5959c6476cde8f41a79e823c22feb656be2710cd2a3232cef9"},
-    {file = "flake8_comprehensions-3.7.0-py3-none-any.whl", hash = "sha256:a5d7aea6315bbbd6fbcb2b4e80bff6a54d1600155e26236e555d0c6fe1d62522"},
+    {file = "flake8-comprehensions-3.8.0.tar.gz", hash = "sha256:8e108707637b1d13734f38e03435984f6b7854fa6b5a4e34f93e69534be8e521"},
+    {file = "flake8_comprehensions-3.8.0-py3-none-any.whl", hash = "sha256:9406314803abe1193c064544ab14fdc43c58424c0882f6ff8a581eb73fc9bb58"},
 ]
 flake8-docstrings = [
     {file = "flake8-docstrings-1.6.0.tar.gz", hash = "sha256:9fe7c6a306064af8e62a055c2f61e9eb1da55f84bb39caef2b84ce53708ac34b"},
@@ -1496,8 +1496,8 @@ flake8-polyfill = [
     {file = "flake8_polyfill-1.0.2-py2.py3-none-any.whl", hash = "sha256:12be6a34ee3ab795b19ca73505e7b55826d5f6ad7230d31b18e106400169b9e9"},
 ]
 flake8-simplify = [
-    {file = "flake8_simplify-0.14.2-py3-none-any.whl", hash = "sha256:6584f3d49350659caaf2a42129f820dc64e60d4bdcb316f621b4e1cfae27e33a"},
-    {file = "flake8_simplify-0.14.2.tar.gz", hash = "sha256:4a8f103607195c3d0743a2fd8beeebe24926e19fb3e24521042cfc35771a8d4d"},
+    {file = "flake8_simplify-0.14.5-py3-none-any.whl", hash = "sha256:9b4b93d75b3c2046883d490df0e8e957b725fcdccf455c0ffe51436d1a098f6b"},
+    {file = "flake8_simplify-0.14.5.tar.gz", hash = "sha256:0bf8b1d60cf35d3e7cf8871194445589778f49ce81a35060f2fe3e0501f5792e"},
 ]
 frozenlist = [
     {file = "frozenlist-1.2.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:977a1438d0e0d96573fd679d291a1542097ea9f4918a8b6494b06610dfeefbf9"},
@@ -1898,8 +1898,8 @@ requests = [
     {file = "requests-2.26.0.tar.gz", hash = "sha256:b8aa58f8cf793ffd8782d3d8cb19e66ef36f7aba4353eec859e74678b01b07a7"},
 ]
 respx = [
-    {file = "respx-0.19.0-py2.py3-none-any.whl", hash = "sha256:1ac1cc99bf892ffd3e33108ae43d71d8309a58ac226965f4bd81ec055600f265"},
-    {file = "respx-0.19.0.tar.gz", hash = "sha256:4a09e15803c7450d45303520ec528794c9fd77b05984263bc83b78aabbb39413"},
+    {file = "respx-0.19.1-py2.py3-none-any.whl", hash = "sha256:4b13ba2aa4fc619ad5523786bacb4a565fab4ba3d02582b12f23942aa5a9bdf6"},
+    {file = "respx-0.19.1.tar.gz", hash = "sha256:df26cf743f4c48bb38f134a3b0ec7384d5350671264c1c28bbddf41658d6f01a"},
 ]
 rfc3986 = [
     {file = "rfc3986-1.5.0-py2.py3-none-any.whl", hash = "sha256:a86d6e1f5b1dc238b218b012df0aa79409667bb209e58da56d0b94704e712a97"},
