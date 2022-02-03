@@ -6,6 +6,42 @@ from typing import Optional
 from pydantic import BaseModel, Field
 
 
+class FloorCoordinates(BaseModel):
+    """Class holding the floor_coordinates."""
+
+    x: Optional[int] = None
+    y: Optional[int] = None
+
+
+class Location(BaseModel):
+    """Class holding the location."""
+
+    floor_coordinates: Optional[FloorCoordinates] = None
+    installation_id: Optional[int] = None
+    floor_id: Optional[int] = None
+    gateway_id: Optional[int] = None
+    room_id: Optional[int] = None
+
+
+class Status(BaseModel):
+    """Class holding the status."""
+
+    locked: Optional[bool] = None
+    manual_override: Optional[bool] = None
+    state: Optional[str] = None
+    position: Optional[int] = None
+    last_change: Optional[float] = None
+    preset_position: Optional[int] = None
+
+
+class Attributes(BaseModel):
+    """Class holding the attributes."""
+
+    azimuth: Optional[str] = None
+    compass_point: Optional[str] = None
+    surface_area: Optional[str] = None
+
+
 class Shutter(BaseModel):
     """Object holding an OpenMotics Shutter.
 
@@ -45,16 +81,15 @@ class Shutter(BaseModel):
     """
 
     # pylint: disable=too-many-instance-attributes
-    id: int  # noqa:A003
+    idx: int = Field(..., alias="id")
     name: Optional[str] = None
-    configuration: Optional[dict] = None
-    location: Optional[dict] = None
-    capabilities: Optional[int] = None
-    status: Optional[dict] = None
+    shutter_type: str = Field(None, alias="type")
+    capabilities: Optional[dict] = None
+    status: Optional[Status] = None
+    location: Optional[Location] = None
+    attributes: Optional[Attributes] = None
+    metadata: Optional[str] = None
     version: Optional[str] = Field(None, alias="_version")
-
-    _state: Optional[bool] = None
-    _position: Optional[str] = None
 
     def __str__(self):
         """Represent the class objects as a string.
@@ -63,30 +98,4 @@ class Shutter(BaseModel):
             string
 
         """
-        return f"{self.id}_{self.name}"
-
-    @property
-    def state(self):
-        """Return state of a shutter.
-
-        Returns:
-            bool
-        """
-        try:
-            self._state = self.status["state"]
-        except KeyError:
-            self._state = None
-        return self._state
-
-    @property
-    def position(self):
-        """Return position of a shutter.
-
-        Returns:
-            position
-        """
-        try:
-            self._position = self.status["position"]
-        except KeyError:
-            self._position = None
-        return self._position
+        return f"{self.idx}_{self.name}"

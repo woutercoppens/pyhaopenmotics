@@ -4,13 +4,15 @@ from __future__ import annotations
 import json
 from typing import TYPE_CHECKING, Any, List
 
+from pydantic import parse_obj_as
+
 from pyhaopenmotics.models.shutter import Shutter
 
 if TYPE_CHECKING:
     from pyhaopenmotics.base import BaseClient  # pylint: disable=R0401
 
 
-class ShuttersCtrl:  # noqa: SIM119
+class OpenMoticsShutters:  # noqa: SIM119
     """Object holding information of the OpenMotics outputs.
 
     All actions related to Outputs or a specific Output.
@@ -53,7 +55,7 @@ class ShuttersCtrl:  # noqa: SIM119
         else:
             body = await self.baseclient.get(path)
 
-        return [Shutter(**shutter) for shutter in body["data"]]  # type: ignore
+        return parse_obj_as(list[Shutter], body["data"])
 
     async def get_by_id(  # type: ignore
         self,
@@ -71,9 +73,8 @@ class ShuttersCtrl:  # noqa: SIM119
         """
         path = f"/base/installations/{installation_id}/shutters/{shutter_id}"
         body = await self.baseclient.get(path)
-        shutter = body["data"]
 
-        return Shutter(**shutter)  # type: ignore
+        return Shutter.parse_obj(body["data"])
 
     async def move_up(
         self,

@@ -45,7 +45,7 @@ class CloudClient(BaseClient):
 
         self.token = None
 
-    def token_saver(self, token, **kwargs):
+    async def token_saver(self, token, **kwargs):
         """Save the token to self.token.
 
         Args:
@@ -61,7 +61,6 @@ class CloudClient(BaseClient):
             RequestUnauthorizedException: blabla
             ApiException: blabla
         """
-        print(self.token_url)
         try:
             self.token = await self._session.fetch_token(
                 url=self.token_url,
@@ -86,13 +85,15 @@ class LocalGatewayClient(BaseClient):
     """Doc String."""
 
     # NOT TESTED
-    def __init__(self, host, username, password, **kwargs):
+    def __init__(self, host, username, password, port=443, ssl=True, **kwargs):
         """Init the LegacyClient object.
 
         Args:
             host: str
             username: str
             password: str
+            port: int
+            ssl: bool
             **kwargs: other arguments
         """
         super().__init__(host=host, **kwargs)
@@ -141,7 +142,7 @@ class LocalGatewayClient(BaseClient):
 
         return
 
-    def token_saver(self, token, **kwargs):
+    async def token_saver(self, token, **kwargs):
         """Save the token to self.token.
 
         Args:

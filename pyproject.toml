@@ -26,23 +26,23 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.9"
-httpx = "0.21.0"
+# httpx = "0.21.3" installed via homeassistant
 authlib = "^0.15.5"
 tenacity = "^8.0.1"
 cached_property = "^1.5.2"
-oauthlib = "^3.1.1"
-pydantic = "^1.8.2"
+oauthlib = "^3.2.0"
+pydantic = "^1.9.0"
 
 
 [tool.poetry.dev-dependencies]
-aresponses = "^2.1.4"
-black = "^21.12b0"
-blacken-docs = "^1.12.0"
-coverage = {version = "^6.2", extras = ["toml"]}
+aresponses = "^2.1.5"
+black = "^22.1"
+blacken-docs = "^1.12.1"
+coverage = {version = "^6.3.1", extras = ["toml"]}
 flake8 = "^4.0.1"
 flake8-docstrings = "^1.6.0"
 isort = "^5.10.1"
-mypy = "^0.910"
+mypy = "^0.931"
 pre-commit = "^2.16.0"
 pre-commit-hooks = "^4.0.1"
 pylint = "^2.12.2"
@@ -63,7 +63,7 @@ flake8-markdown = "^0.3.0"
 darglint = "^1.8.1"
 safety = "^1.10.3"
 codespell = "^2.1.0"
-bandit = "^1.7.1"
+bandit = "^1.7.2"
 respx = "^0.19.0"
 
 [tool.poetry.urls]
@@ -73,6 +73,7 @@ Changelog = "https://github.com/woutercoppens/pyhaopenmotics/releases"
 [tool.bandit]
 targets = ["src"]
 skips = ["B101", "B110", "B106"]
+
 
 [tool.black]
 target-version = ['py39']
@@ -140,3 +141,13 @@ verbose = true
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pyright]
+include = ["src"]
+exclude = ["**/node_modules",
+    "**/__pycache__"
+]
+ignore = []
+
+reportMissingImports = true
+reportMissingTypeStubs = false

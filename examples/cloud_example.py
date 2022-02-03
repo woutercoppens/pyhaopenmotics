@@ -10,8 +10,6 @@ How to use this script:
     export CLIENT_SECRET="djfqsdkfjqsdkfjqsdkfjqsdkfjkqsdjfkjdkfqjdskf"
     python cloud_example.py
 """
-
-
 import asyncio
 import logging
 import os
@@ -37,31 +35,36 @@ client_secret = os.environ["CLIENT_SECRET"]
 
 
 async def main():
+    """Show example on controlling your OpenMotics device."""
     async with CloudClient(
         client_id,
         client_secret,
-    ) as client:
-        await client.get_token()
+    ) as omclient:
+        await omclient.get_token()
 
-    # user = await client.async_get_user()
-    # print(user)
-
-    installations = await client.installations.get_all()
+    installations = await omclient.installations.get_all()
     print(installations)
 
-    i_id = installations[0].id
+    i_id = installations[0].idx
 
-    installation = await client.installations.get_by_id(i_id)
+    installation = await omclient.installations.get_by_id(i_id)
     print(installation)
-    print(installation.id)
+    print(installation.idx)
     print(installation.name)
 
-    outputs = await client.outputs.get_all(i_id)
+    outputs = await omclient.outputs.get_all(i_id)
     print(outputs)
 
-    print(outputs[0].state)
+    print(outputs[0])
+
+    sensors = await omclient.sensors.get_all(i_id)
+    print(sensors)
+
+    ga = await omclient.groupactions.get_all(i_id)
+    print(ga)
+
+    await omclient.close()
 
 
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    asyncio.run(main())

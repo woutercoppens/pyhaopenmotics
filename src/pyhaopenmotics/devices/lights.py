@@ -1,4 +1,4 @@
-"""Module containing the base of an output."""
+"""Module containing the base of an light."""
 
 from __future__ import annotations
 
@@ -6,16 +6,16 @@ from typing import TYPE_CHECKING, Any
 
 from pydantic import parse_obj_as
 
-from pyhaopenmotics.models.output import Output
+from pyhaopenmotics.models.light import Light
 
 if TYPE_CHECKING:
     from pyhaopenmotics.base import BaseClient  # pylint: disable=R0401
 
 
-class OpenMoticsOutputs:  # noqa: SIM119
-    """Object holding information of the OpenMotics outputs.
+class OpenMoticsLights:  # noqa: SIM119
+    """Object holding information of the OpenMotics lights.
 
-    All actions related to Outputs or a specific Output.
+    All actions related to lights or a specific light.
     """
 
     def __init__(self, baseclient: BaseClient) -> None:
@@ -29,21 +29,21 @@ class OpenMoticsOutputs:  # noqa: SIM119
     async def get_all(  # noqa: A003
         self,
         installation_id: int,
-        output_filter: str | None = None,
-    ) -> list[Output]:
-        """Get a list of all output objects.
+        light_filter: str | None = None,
+    ) -> list[Light]:
+        """Get a list of all light objects.
 
         Args:
             installation_id: int
-            output_filter: str
+            light_filter: str
 
         Returns:
-            Dict with all outputs
+            Dict with all lights
         """
-        path = f"/base/installations/{installation_id}/outputs"
+        path = f"/base/installations/{installation_id}/lights"
 
-        if output_filter:
-            query_params = {"filter": output_filter}
+        if light_filter:
+            query_params = {"filter": light_filter}
             body = await self.baseclient.get(
                 path=path,
                 params=query_params,
@@ -51,86 +51,86 @@ class OpenMoticsOutputs:  # noqa: SIM119
         else:
             body = await self.baseclient.get(path)
 
-        return parse_obj_as(list[Output], body["data"])
+        return parse_obj_as(list[Light], body["data"])
 
     async def get_by_id(
         self,
         installation_id: int,
-        output_id: int,
-    ) -> Output:
-        """Get output by id.
+        light_id: int,
+    ) -> Light:
+        """Get light by id.
 
         Args:
             installation_id: int
-            output_id: int
+            light_id: int
 
         Returns:
-            Returns a output with id
+            Returns a light with id
         """
-        path = f"/base/installations/{installation_id}/outputs/{output_id}"
+        path = f"/base/installations/{installation_id}/lights/{light_id}"
         body = await self.baseclient.get(path)
 
-        return Output.parse_obj(body["data"])
+        return Light.parse_obj(body["data"])
 
     async def toggle(
         self,
         installation_id: int,
-        output_id: int,
+        light_id: int,
     ) -> dict[str, Any]:
-        """Toggle a specified Output object.
+        """Toggle a specified light object.
 
         Args:
             installation_id: int
-            output_id: int
+            light_id: int
 
         Returns:
-            Returns a output with id
+            Returns a light with id
         """
-        path = f"/base/installations/{installation_id}/outputs/{output_id}/toggle"
+        path = f"/base/installations/{installation_id}/lights/{light_id}/toggle"
         return await self.baseclient.post(path)
 
     async def turn_on(
         self,
         installation_id: int,
-        output_id: int,
+        light_id: int,
         value: int | None = 100,
     ) -> dict[str, Any]:
-        """Turn on a specified Output object.
+        """Turn on a specified light object.
 
         Args:
             installation_id: int
-            output_id: int
+            light_id: int
             value: <0 - 100>
 
         Returns:
-            Returns a output with id
+            Returns a light with id
         """
         if value is not None:
             value = min(value, 100)
             value = max(0, value)
 
-        path = f"/base/installations/{installation_id}/outputs/{output_id}/turn_on"
+        path = f"/base/installations/{installation_id}/lights/{light_id}/turn_on"
         payload = {"value": value}
         return await self.baseclient.post(path, json=payload)
 
     async def turn_off(
         self,
         installation_id: int,
-        output_id: int | None = None,
+        light_id: int | None = None,
     ) -> dict[str, Any]:
-        """Turn off a specified Output object.
+        """Turn off a specified light object.
 
         Args:
             installation_id: int
-            output_id: int
+            light_id: int
 
         Returns:
-            Returns a output with id
+            Returns a light with id
         """
-        if output_id is None:
+        if light_id is None:
             # Turn off all lights
-            path = f"/base/installations/{installation_id}/outputs/turn_off"
+            path = f"/base/installations/{installation_id}/lights/turn_off"
         else:
             # Turn off light with id
-            path = f"/base/installations/{installation_id}/outputs/{output_id}/turn_off"
+            path = f"/base/installations/{installation_id}/lights/{light_id}/turn_off"
         return await self.baseclient.post(path)

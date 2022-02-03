@@ -3,13 +3,15 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, List
 
+from pydantic import parse_obj_as
+
 from pyhaopenmotics.models.groupaction import GroupAction
 
 if TYPE_CHECKING:
     from pyhaopenmotics.base import BaseClient  # pylint: disable=R0401
 
 
-class GroupActionsCtrl:  # noqa: SIM119
+class OpenMoticsGroupActions:  # noqa: SIM119
     """Object holding information of the OpenMotics groupactions.
 
     All actions related to groupaction or a specific groupaction.
@@ -66,7 +68,7 @@ class GroupActionsCtrl:  # noqa: SIM119
         else:
             body = await self.baseclient.get(path)
 
-        return [GroupAction(**grpctn) for grpctn in body["data"]]  # type: ignore
+        return parse_obj_as(list[GroupAction], body["data"])
 
     async def get_by_id(
         self,
@@ -84,9 +86,8 @@ class GroupActionsCtrl:  # noqa: SIM119
         """
         path = f"/base/installations/{installation_id}/groupactions/{groupaction_id}"
         body = await self.baseclient.get(path)
-        grpctn = body["data"]
 
-        return GroupAction(**grpctn)  # type: ignore
+        return GroupAction.parse_obj(body["data"])
 
     async def trigger(
         self,

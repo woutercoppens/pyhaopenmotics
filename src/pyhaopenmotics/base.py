@@ -14,10 +14,12 @@ from tenacity import (
 )
 
 from .const import CLOUD_HOST, PREFIX
-from .devices.groupactions import GroupActionsCtrl
-from .devices.installations import InstallationsCtrl
-from .devices.outputs import OutputsCtrl
-from .devices.shutters import ShuttersCtrl
+from .devices.groupactions import OpenMoticsGroupActions
+from .devices.installations import OpenMoticsInstallations
+from .devices.lights import OpenMoticsLights
+from .devices.outputs import OpenMoticsOutputs
+from .devices.sensors import OpenMoticsSensors
+from .devices.shutters import OpenMoticsShutters
 from .errors import RetryableException, client_error_handler
 
 logger = logging.getLogger(__name__)
@@ -32,6 +34,7 @@ class BaseClient:
     singleton for making all requests to allow efficient connection pool management.
     """
 
+    # pylint: disable=too-many-instance-attributes
     def __init__(
         self,
         host: str | None = None,
@@ -62,13 +65,15 @@ class BaseClient:
         else:
             self._host = host
 
-        self.url = "{}://{}:{}".format("https" if ssl else "http", self._host, port)
+        self.url = f"{'https' if ssl else 'http'}://{self._host}:{port}"
         self.token_url = self._get_url("/authentication/oauth2/token")
 
-        self.installations = InstallationsCtrl(baseclient=self)
-        self.outputs = OutputsCtrl(baseclient=self)
-        self.shutters = ShuttersCtrl(baseclient=self)
-        self.groupactions = GroupActionsCtrl(baseclient=self)
+        self.installations = OpenMoticsInstallations(baseclient=self)
+        self.outputs = OpenMoticsOutputs(baseclient=self)
+        self.shutters = OpenMoticsShutters(baseclient=self)
+        self.groupactions = OpenMoticsGroupActions(baseclient=self)
+        self.lights = OpenMoticsLights(baseclient=self)
+        self.sensors = OpenMoticsSensors(baseclient=self)
 
     def _get_url(self, endpoint):
         """Join endpoint to url.
@@ -81,6 +86,12 @@ class BaseClient:
         """
         return f"{self.url}{PREFIX}{endpoint}"
 
+    @retry(
+        retry=retry_if_exception_type(RetryableException),
+        stop=(stop_after_delay(300) | stop_after_attempt(10)),
+        wait=wait_random_exponential(multiplier=1, max=30),
+        reraise=True,
+    )
     async def get_token(self):
         """Get Token.
 

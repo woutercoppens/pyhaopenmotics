@@ -1,12 +1,16 @@
 """Directory holding devices."""
-from pyhaopenmotics.devices.groupactions import GroupActionsCtrl
-from pyhaopenmotics.devices.installations import InstallationsCtrl
-from pyhaopenmotics.devices.outputs import OutputsCtrl
-from pyhaopenmotics.devices.shutters import ShuttersCtrl
+from pyhaopenmotics.devices.groupactions import OpenMoticsGroupActions
+from pyhaopenmotics.devices.installations import OpenMoticsInstallations
+from pyhaopenmotics.devices.lights import OpenMoticsLights
+from pyhaopenmotics.devices.outputs import OpenMoticsOutputs
+from pyhaopenmotics.devices.sensors import OpenMoticsSensors
+from pyhaopenmotics.devices.shutters import OpenMoticsShutters
 
 __all__ = [
-    "InstallationsCtrl",
-    "OutputsCtrl",
-    "GroupActionsCtrl",
-    "ShuttersCtrl",
+    "OpenMoticsInstallations",
+    "OpenMoticsOutputs",
+    "OpenMoticsGroupActions",
+    "OpenMoticsShutters",
+    "OpenMoticsLights",
+    "OpenMoticsSensors",
 ]

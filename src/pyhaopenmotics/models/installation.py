@@ -6,6 +6,26 @@ from typing import Optional
 from pydantic import BaseModel, Field
 
 
+class Allowed(BaseModel):
+    """Object holding an OpenMotics Installation."""
+
+    allowed: Optional[bool] = None
+
+
+class Acl(BaseModel):
+    """Object holding an OpenMotics Installation."""
+
+    configure: Optional[Allowed] = None
+    view: Optional[Allowed] = None
+    control: Optional[Allowed] = None
+
+
+class Network(BaseModel):
+    """Object holding an OpenMotics Installation."""
+
+    local_ip_address: Optional[str] = None
+
+
 class Installation(BaseModel):
     """Object holding an OpenMotics Installation.
 
@@ -42,17 +62,17 @@ class Installation(BaseModel):
     """
 
     # pylint: disable=too-many-instance-attributes
-    id: int  # noqa:A003
+    idx: int = Field(..., alias="id")
     name: Optional[str] = None
     description: Optional[str] = None
     gateway_model: Optional[str] = None
-    acl: Optional[dict] = Field(None, alias="_acl")
+    acl: Optional[Acl] = Field(None, alias="_acl")
     version: Optional[str] = Field(None, alias="_version")
     user_role: Optional[dict] = None
     registration_key: Optional[str] = None
     platform: Optional[str] = None
     building_roles: Optional[dict] = None
-    network: Optional[dict] = None
+    network: Optional[Network] = None
     flags: Optional[dict] = None
     features: Optional[dict] = None
 
@@ -64,4 +84,4 @@ class Installation(BaseModel):
 
         """
 
-        return f"{self.id}_{self.name}"
+        return f"{self.idx}_{self.name}"

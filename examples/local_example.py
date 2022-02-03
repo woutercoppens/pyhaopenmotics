@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # noqa: E800
-
 """
 Local Example.
 
@@ -11,8 +10,6 @@ How to use this script:
     export PASSWORD="djfqsdkfjqsdkfjqsdkfjqsdkfjkqsdjfkjdkfqjdskf"
     python cloud_example.py
 """
-
-
 import asyncio
 import logging
 import os
@@ -30,41 +27,44 @@ console.setLevel(logging.DEBUG)
 console.setFormatter(log_format)
 log.addHandler(console)
 
-
 load_dotenv()
 
 local_host = os.environ["LOCAL_HOST"]
-username = os.environ["USERNAME"]
+username = os.environ["USER_NAME"]
 password = os.environ["PASSWORD"]
+port = os.environ["PORT"]
+ssl = os.environ["SSL"]
 
 
-async def main():
+async def main() -> None:
+    """Show example on controlling your OpenMotics device."""
     async with LocalGatewayClient(
         host=local_host,
         username=username,
         password=password,
-    ) as client:
-        await client.get_token()
+        port=port,
+        ssl=ssl,
+    ) as omclient:
+        await omclient.get_token()
 
-    # user = await client.async_get_user()
-    # print(user)
-
-    installations = await client.installations.get_all()
+    installations = await omclient.installations.get_all()
     print(installations)
 
-    i_id = installations[0].id
+    i_id = installations[0].idx
 
-    installation = await client.installations.get_by_id(i_id)
+    installation = await omclient.installations.get_by_id(i_id)
     print(installation)
-    print(installation.id)
+    print(installation.idx)
     print(installation.name)
 
-    outputs = await client.outputs.get_all(i_id)
+    outputs = await omclient.outputs.get_all(i_id)
     print(outputs)
 
-    print(outputs[0].state)
+    print(outputs[0].status.on)
+
+    sensors = await omclient.sensors.get_all(i_id)
+    print(sensors)
 
 
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    asyncio.run(main())

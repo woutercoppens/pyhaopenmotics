@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from re import sub
-from typing import Generator, Union
+from typing import Generator  # , Union
 
 from httpx import (
     HTTPStatusError,
@@ -58,7 +58,10 @@ class ApiException(Exception):
     """Base class for all exceptions related to networking."""
 
     def __init__(
-        self, message: str, request: Request, response: Response | None
+        self,
+        message: str,
+        request: Request | None = None,
+        response: Response | None = None,
     ) -> None:
         """Init Function.
 
@@ -149,71 +152,72 @@ def client_error_handler() -> Generator[None]:  # type: ignore
     """
     try:
         yield
-    except TimeoutException as ex:
+    except TimeoutException as err:
         raise NetworkTimeoutException(
             (
                 "Request timed out while accessing the API. Retry the request with "
                 "longer timeout. Check the network if the issue persists."
             ),
-            ex.request,
+            err.request,
             None,
-        ) from ex
-    except NetworkError as ex:
+        ) from err
+    except NetworkError as err:
         raise NetworkException(
             (
                 "Unknown network error while accessing the API."
                 " Retry the request or check the network if the issue persists."
             ),
-            ex.request,
+            err.request,
             None,
-        ) from ex
-    except HTTPStatusError as ex:
-        if ex.response.status_code in [codes.UNAUTHORIZED, codes.FORBIDDEN]:
+        ) from err
+    except HTTPStatusError as err:
+        if err.response.status_code in [codes.UNAUTHORIZED, codes.FORBIDDEN]:
             raise RequestUnauthorizedException(
                 (
                     "Access token is invalid or expired. Refresh the access token"
                     "and try again."
                 ),
-                ex.request,
-                ex.response,
-            ) from ex
-        if ex.response.status_code == codes.TOO_MANY_REQUESTS:
+                err.request,
+                err.response,
+            ) from err
+        if err.response.status_code == codes.TOO_MANY_REQUESTS:
             raise RequestBackoffException(
                 (
                     "Client is sending too many requests."
                     " Reduce the frequency at which API is accessed and try again."
                 ),
-                ex.request,
-                ex.response,
+                err.request,
+                err.response,
             )
-        if codes.is_client_error(ex.response.status_code):
+        if codes.is_client_error(err.response.status_code):
             raise RequestClientException(
                 (
                     "Server processed the request and returned a 4xx response."
                     " Don't retry the request without changing the arguments as the new"
                     " request will fail again with the same error."
                 ),
-                ex.request,
-                ex.response,
-            ) from ex
-        if codes.is_server_error(ex.response.status_code):
+                err.request,
+                err.response,
+            ) from err
+        if codes.is_server_error(err.response.status_code):
             raise RequestServerException(
                 (
                     "Server couldn't process the request successfully and returned a"
                     " 5xx response. Try again with reasonable backoff strategy."
                 ),
-                ex.request,
-                ex.response,
-            ) from ex
+                err.request,
+                err.response,
+            ) from err
 
         raise RequestException(
             "Unknown response error. Check the log for more details.",
-            ex.request,
-            ex.response,
-        ) from ex
+            err.request,
+            err.response,
+        ) from err
 
 
-def _sanitize_request(request: Request) -> Union[dict, None]:
+# def _sanitize_request(request: Request) -> Union[dict, None]:
+def _sanitize_request(request: Request) -> dict:
     """Sanitize request.
 
     Args:
@@ -237,7 +241,8 @@ def _sanitize_request(request: Request) -> Union[dict, None]:
     }
 
 
-def _sanitize_response(response: Response) -> Union[dict, None]:
+# def _sanitize_response(response: Response) -> Union[dict, None]:
+def _sanitize_response(response: Response) -> dict:
     if not response:
         return None
 

@@ -4,13 +4,15 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, List
 
+from pydantic import parse_obj_as
+
 from pyhaopenmotics.models.installation import Installation
 
 if TYPE_CHECKING:
     from pyhaopenmotics.base import BaseClient  # pylint: disable=R0401
 
 
-class InstallationsCtrl:  # noqa: SIM119
+class OpenMoticsInstallations:  # noqa: SIM119
     """Object holding information of the OpenMotics installation.
 
     All actions related to Installations or a specific Installation.
@@ -56,9 +58,7 @@ class InstallationsCtrl:  # noqa: SIM119
         else:
             body = await self.baseclient.get(path)
 
-        return [
-            Installation(**installation) for installation in body["data"]
-        ]  # type: ignore
+        return parse_obj_as(list[Installation], body["data"])
 
     async def get_by_id(
         self,
@@ -75,6 +75,5 @@ class InstallationsCtrl:  # noqa: SIM119
         """
         path = f"/base/installations/{installation_id}"
         body = await self.baseclient.get(path)
-        installation = body["data"]
 
-        return Installation(**installation)  # type: ignore
+        return Installation.parse_obj(body["data"])
