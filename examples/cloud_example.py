@@ -63,6 +63,12 @@ async def main():
     ga = await omclient.groupactions.get_all(i_id)
     print(ga)
 
+    tg = await omclient.thermostats.groups.get_all(i_id)
+    print(tg)
+
+    tu = await omclient.thermostats.units.get_all(i_id)
+    print(tu)
+
     await omclient.close()
 
 

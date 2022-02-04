@@ -5,6 +5,7 @@ from pyhaopenmotics.devices.lights import OpenMoticsLights
 from pyhaopenmotics.devices.outputs import OpenMoticsOutputs
 from pyhaopenmotics.devices.sensors import OpenMoticsSensors
 from pyhaopenmotics.devices.shutters import OpenMoticsShutters
+from pyhaopenmotics.devices.thermostats import OpenMoticsThermostats
 
 __all__ = [
     "OpenMoticsInstallations",
@@ -13,4 +14,5 @@ __all__ = [
     "OpenMoticsShutters",
     "OpenMoticsLights",
     "OpenMoticsSensors",
+    "OpenMoticsThermostats",
 ]

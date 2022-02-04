@@ -20,6 +20,7 @@ from .devices.lights import OpenMoticsLights
 from .devices.outputs import OpenMoticsOutputs
 from .devices.sensors import OpenMoticsSensors
 from .devices.shutters import OpenMoticsShutters
+from .devices.thermostats import OpenMoticsThermostats
 from .errors import RetryableException, client_error_handler
 
 logger = logging.getLogger(__name__)
@@ -74,6 +75,7 @@ class BaseClient:
         self.groupactions = OpenMoticsGroupActions(baseclient=self)
         self.lights = OpenMoticsLights(baseclient=self)
         self.sensors = OpenMoticsSensors(baseclient=self)
+        self.thermostats = OpenMoticsThermostats(baseclient=self)
 
     def _get_url(self, endpoint):
         """Join endpoint to url.
