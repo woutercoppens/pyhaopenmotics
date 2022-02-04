@@ -41,11 +41,11 @@ async def main():
     installations = await bc.installations.get_all()
     print(installations)
 
-    i_id = installations[0].id
+    i_id = installations[0].idx
 
     installation = await bc.installations.get_by_id(i_id)
     print(installation)
-    print(installation.id)
+    print(installation.idx)
     print(installation.name)
 
     outputs = await bc.outputs.get_all(i_id)
@@ -55,8 +55,7 @@ async def main():
 
 
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    asyncio.run(main())
 ```
 
 ## Changelog & Releases
