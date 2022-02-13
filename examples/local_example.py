@@ -6,7 +6,7 @@ Local Example.
 How to use this script:
     pip install python-dotenv
     export LOCAL_HOST='192.168.0.2'
-    export USERNAME="dnfqsdfjqsjfqsdjfqf"
+    export USER_NAME="dnfqsdfjqsjfqsdjfqf"
     export PASSWORD="djfqsdkfjqsdkfjqsdkfjqsdkfjkqsdjfkjdkfqjdskf"
     python cloud_example.py
 """
