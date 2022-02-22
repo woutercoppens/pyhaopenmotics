@@ -51,8 +51,6 @@ class OpenMoticsOutputs:  # noqa: SIM119
         else:
             body = await self.baseclient.get(path)
 
-        print(body['data'])
-
         return parse_obj_as(list[Output], body["data"])
 
     async def get_by_id(
