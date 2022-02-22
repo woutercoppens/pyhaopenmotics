@@ -49,7 +49,7 @@ async def main():
 
     installation = await omclient.installations.get_by_id(i_id)
     print(installation)
-    print(installation.idx)
+    print(installation.local_id)
     print(installation.name)
 
     outputs = await omclient.outputs.get_all(i_id)
