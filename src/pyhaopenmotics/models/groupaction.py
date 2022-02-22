@@ -42,6 +42,7 @@ class GroupAction(BaseModel):
     """
 
     idx: int = Field(..., alias="id")
+    local_id: int
     name: Optional[str] = None
     actions: Optional[List] = None
     location: Optional[Location] = None

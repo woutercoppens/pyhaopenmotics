@@ -82,6 +82,7 @@ class Shutter(BaseModel):
 
     # pylint: disable=too-many-instance-attributes
     idx: int = Field(..., alias="id")
+    local_id: int
     name: Optional[str] = None
     shutter_type: str = Field(None, alias="type")
     capabilities: Optional[dict] = None

@@ -60,6 +60,7 @@ class Light(BaseModel):
 
     # pylint: disable=too-many-instance-attributes
     idx: int = Field(..., alias="id")
+    local_id: int
     name: Optional[str] = None
     capabilities: Optional[List] = None
     location: Optional[Location] = None

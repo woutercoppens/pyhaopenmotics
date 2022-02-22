@@ -110,7 +110,7 @@ class ThermostatGroup(BaseModel):
 
     # pylint: disable=too-many-instance-attributes
     idx: int = Field(..., alias="id")
-    local_id: Optional[int] = None
+    local_id: int
     name: Optional[str] = None
     location: Optional[GroupLocation] = None
     status: Optional[GroupStatus] = None

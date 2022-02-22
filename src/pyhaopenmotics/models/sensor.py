@@ -53,6 +53,7 @@ class Sensor(BaseModel):
 
     # pylint: disable=too-many-instance-attributes
     idx: int = Field(..., alias="id")
+    local_id: int
     name: Optional[str] = None
     location: Optional[Location] = None
     physical_quantity: Optional[str]
