@@ -85,7 +85,7 @@ class Shutter(BaseModel):
     local_id: int
     name: Optional[str] = None
     shutter_type: str = Field(None, alias="type")
-    capabilities: Optional[dict] = None
+    capabilities: Optional[list] = None
     status: Optional[Status] = None
     location: Optional[Location] = None
     attributes: Optional[Attributes] = None

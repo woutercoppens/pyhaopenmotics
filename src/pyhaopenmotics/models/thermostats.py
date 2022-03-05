@@ -200,6 +200,7 @@ class ThermostatUnit(BaseModel):
     """
     # pylint: disable=too-many-instance-attributes
     idx: int = Field(..., alias="id")
+    local_id: Optional[int] = None
     name: Optional[str] = None
     location: Optional[UnitLocation] = None
     status: Optional[UnitStatus] = None
