@@ -49,7 +49,7 @@ async def main():
 
     installation = await omclient.installations.get_by_id(i_id)
     print(installation)
-    print(installation.local_id)
+    print(installation.idx)
     print(installation.name)
 
     outputs = await omclient.outputs.get_all(i_id)
@@ -68,6 +68,9 @@ async def main():
 
     tu = await omclient.thermostats.units.get_all(i_id)
     print(tu)
+
+    shu = await omclient.shutters.get_all(i_id)
+    print(shu)
 
     await omclient.close()
 

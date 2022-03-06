@@ -28,8 +28,8 @@ class Status(BaseModel):
 
     locked: Optional[bool] = None
     manual_override: Optional[bool] = None
-    state: Optional[str] = None
-    position: Optional[int] = None
+    state: str = None
+    position: int = None
     last_change: Optional[float] = None
     preset_position: Optional[int] = None
 
@@ -40,6 +40,17 @@ class Attributes(BaseModel):
     azimuth: Optional[str] = None
     compass_point: Optional[str] = None
     surface_area: Optional[str] = None
+
+class Configuration(BaseModel):
+    """Class holding the attributes."""
+
+    group_1: Optional[int] = None
+    group_2: Optional[int] = None
+    name: Optional[str] = None
+    steps: Optional[int] = None
+    timer_down: Optional[int] = None
+    timer_up: Optional[int] = None
+    up_down_config: Optional[str] = None
 
 
 class Shutter(BaseModel):
@@ -58,6 +69,7 @@ class Shutter(BaseModel):
     #     "up_down_config": <up down configuration>
     # },
     # "id": <id>,
+    # 'type': 'GENERIC'
     # "capabilities": ["UP_DOWN", "POSITION", "RELATIVE_POSITION",
     #          "HW_LOCK"|"CLOUD_LOCK", "PRESET", "CHANGE_PRESET"],
     # "location": {
@@ -85,10 +97,11 @@ class Shutter(BaseModel):
     local_id: int
     name: Optional[str] = None
     shutter_type: str = Field(None, alias="type")
-    capabilities: Optional[list] = None
-    status: Optional[Status] = None
+    capabilities: list = None
+    status: Status = None
     location: Optional[Location] = None
-    attributes: Optional[Attributes] = None
+    attributes: Attributes = None
+    configuration: Configuration = None
     metadata: Optional[str] = None
     version: Optional[str] = Field(None, alias="_version")
 

@@ -29,7 +29,7 @@ class Status(BaseModel):
     on: bool
     locked: Optional[bool] = None
     manual_override: Optional[bool] = None
-    value: Optional[int] = None
+    value: int = None
 
 
 class Output(BaseModel):
@@ -62,9 +62,9 @@ class Output(BaseModel):
     name: Optional[str] = None
     output_type: str = Field(None, alias="type")
     location: Optional[Location] = None
-    capabilities: Optional[List] = None
+    capabilities: List = None
     metadata: Optional[dict] = None
-    status: Optional[Status] = None
+    status: Status = None
     last_state_change: Optional[float] = None
     version: Optional[str] = Field(None, alias="_version")
 

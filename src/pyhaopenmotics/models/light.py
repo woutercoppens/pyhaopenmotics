@@ -28,7 +28,7 @@ class Status(BaseModel):
     on: bool
     locked: Optional[bool] = None
     manual_override: Optional[bool] = None
-    value: Optional[int] = None
+    value: int = None
 
 
 class Light(BaseModel):
@@ -64,7 +64,7 @@ class Light(BaseModel):
     name: Optional[str] = None
     capabilities: Optional[List] = None
     location: Optional[Location] = None
-    status: Optional[Status] = None
+    status: Status = None
     version: Optional[str] = Field(None, alias="_version")
 
     _brightness: Optional[int] = None
