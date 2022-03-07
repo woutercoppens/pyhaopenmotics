@@ -125,7 +125,7 @@ client = ["requests"]
 
 [[package]]
 name = "bandit"
-version = "1.7.3"
+version = "1.7.4"
 description = "Security oriented static analyser for python code."
 category = "dev"
 optional = false
@@ -1146,7 +1146,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "9851e437d4329e0427cece0a9e2c701495cf96ef2d9d7343f68aeaadcdaf7d29"
+content-hash = "44deb827c81f7f900688d28be67cf39290d09a9d3038923314f7ccaff1db28b5"
 
 [metadata.files]
 aiohttp = [
@@ -1260,8 +1260,8 @@ authlib = [
     {file = "Authlib-0.15.5.tar.gz", hash = "sha256:b83cf6360c8e92b0e9df0d1f32d675790bcc4e3c03977499b1eed24dcdef4252"},
 ]
 bandit = [
-    {file = "bandit-1.7.3-py3-none-any.whl", hash = "sha256:3ce9b4e6a4f7f41aa966c9543e635dd35e52a793a47e746f0c55c7ecfc69d7e8"},
-    {file = "bandit-1.7.3.tar.gz", hash = "sha256:58772ca951bf1129dda8a280d351547de832720bf7b5c29fac3103927980b8a6"},
+    {file = "bandit-1.7.4-py3-none-any.whl", hash = "sha256:412d3f259dab4077d0e7f0c11f50f650cc7d10db905d98f6520a95a18049658a"},
+    {file = "bandit-1.7.4.tar.gz", hash = "sha256:2d63a8c573417bae338962d4b9b06fbc6080f74ecd955a092849e1e65c717bd2"},
 ]
 black = [
     {file = "black-22.1.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:1297c63b9e1b96a3d0da2d85d11cd9bf8664251fd69ddac068b98dc4f34f73b6"},
