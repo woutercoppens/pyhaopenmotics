@@ -52,7 +52,7 @@ jobs:
       - name: 🚀 Run pytest
         run: poetry run pytest --cov open_meteo tests
       - name: ⬆️ Upload coverage artifact
-        uses: actions/upload-artifact@v2.3.1
+        uses: actions/upload-artifact@v3
         with:
           name: coverage-${{ matrix.python }}-${{ matrix.os }}
           path: .coverage
@@ -64,7 +64,7 @@ jobs:
       - name: ⤵️ Check out code from GitHub
         uses: actions/checkout@v3
       - name: ⬇️ Download coverage data
-        uses: actions/download-artifact@v2.1.0
+        uses: actions/download-artifact@v3
       - name: 🏗 Set up Python 3.9
         id: python
         uses: actions/setup-python@v3
