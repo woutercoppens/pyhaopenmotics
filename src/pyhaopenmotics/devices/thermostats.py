@@ -32,7 +32,7 @@ class OpenMoticsThermostats:  # noqa: SIM119
     async def set_mode(
         self,
         installation_id: int,
-        mode: str ,
+        mode: str,
     ) -> dict[str, Any]:
         """Set a mode to all Groups the User has access to
 
@@ -51,7 +51,7 @@ class OpenMoticsThermostats:  # noqa: SIM119
     async def set_state(
         self,
         installation_id: int,
-        state: str ,
+        state: str,
     ) -> dict[str, Any]:
         """Set a mode to all Groups the User has access to
 
@@ -81,8 +81,6 @@ class OpenMoticsThermostatGroups:  # noqa: SIM119
             baseclient: BaseClient
         """
         self.baseclient = baseclient
-
-
 
     async def get_all(  # noqa: A003
         self,
@@ -125,7 +123,7 @@ class OpenMoticsThermostatGroups:  # noqa: SIM119
         self,
         installation_id: int,
         thermostatgroup_id: int,
-        mode: str ,
+        mode: str,
     ) -> dict[str, Any]:
         """Turn on a specified Output object.
 
@@ -142,6 +140,7 @@ class OpenMoticsThermostatGroups:  # noqa: SIM119
         payload = {"mode": mode}
         return await self.baseclient.post(path, json=payload)
 
+
 class OpenMoticsThermostatUnits:  # noqa: SIM119
     """Object holding information of the OpenMotics thermostats.
 
@@ -155,8 +154,6 @@ class OpenMoticsThermostatUnits:  # noqa: SIM119
             baseclient: BaseClient
         """
         self.baseclient = baseclient
-
-
 
     async def get_all(  # noqa: A003
         self,
@@ -201,7 +198,7 @@ class OpenMoticsThermostatUnits:  # noqa: SIM119
         self,
         installation_id: int,
         thermostatunit_id: int,
-        state: str ,
+        state: str,
     ) -> dict[str, Any]:
         """Set state of a thermostatunit.
 
@@ -222,7 +219,7 @@ class OpenMoticsThermostatUnits:  # noqa: SIM119
         self,
         installation_id: int,
         thermostatunit_id: int,
-        temperature: float ,
+        temperature: float,
     ) -> dict[str, Any]:
         """Set temperature of a thermostatunit.
 
@@ -287,12 +284,12 @@ class OpenMoticsThermostatUnits:  # noqa: SIM119
             "heating": {
                 "AWAY": heating_away_temp,
                 "VACATION": heating_vacation_temp,
-                "PARTY": heating_party_temp
+                "PARTY": heating_party_temp,
             },
             "cooling": {
                 "AWAY": cooling_away_temp,
                 "VACATION": cooling_vacation_temp,
-                "PARTY": cooling_party_temp
-            }
+                "PARTY": cooling_party_temp,
+            },
         }
         return await self.baseclient.post(path, json=payload)

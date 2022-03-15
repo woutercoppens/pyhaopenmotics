@@ -41,6 +41,7 @@ class Attributes(BaseModel):
     compass_point: Optional[str] = None
     surface_area: Optional[str] = None
 
+
 class Configuration(BaseModel):
     """Class holding the attributes."""
 
