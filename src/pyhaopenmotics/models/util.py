@@ -1,4 +1,4 @@
-"""Asynchronous client for the Open-Meteo API."""
+"""Asynchronous client for the OpenMotics API."""
 from __future__ import annotations
 
 from enum import Enum, auto
