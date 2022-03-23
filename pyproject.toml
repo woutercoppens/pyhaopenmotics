@@ -27,7 +27,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.9"
 # httpx = "0.22.0" installed via homeassistant
-authlib = "^1.0.0"
+authlib = ">=0.15.5"
 tenacity = "^8.0.1"
 cached_property = "^1.5.2"
 oauthlib = "^3.2.0"
