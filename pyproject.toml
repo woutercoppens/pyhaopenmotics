@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyhaopenmotics"
-version = "0.0.0"
+version = "0.0.1"
 description = "Asynchronous Python client for the OpenMotics API."
 authors = ["Wouter Coppens <wouter.coppens@gmail.com>"]
 maintainers = ["Wouter Coppens <wouter.coppens@gmail.com>"]
