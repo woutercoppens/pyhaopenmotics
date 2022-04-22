@@ -111,7 +111,7 @@ tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>
 
 [[package]]
 name = "authlib"
-version = "1.0.0"
+version = "1.0.1"
 description = "The ultimate Python library in building OAuth and OpenID Connect servers and clients."
 category = "main"
 optional = false
@@ -819,7 +819,7 @@ diagrams = ["jinja2", "railroad-diagrams"]
 
 [[package]]
 name = "pyright"
-version = "1.1.231"
+version = "1.1.239"
 description = "Command line wrapper for pyright"
 category = "dev"
 optional = false
@@ -1144,7 +1144,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "61de7f7bfa1c7a8c7b25bf0e0fe190737519a4a8b8f3326177c2fa707ea91d3e"
+content-hash = "ca1605af6a09e6f506c04860ac71a61a82ebc5d7baaa0a73e3bdbb0409f879ee"
 
 [metadata.files]
 aiohttp = [
@@ -1254,8 +1254,8 @@ attrs = [
     {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
 ]
 authlib = [
-    {file = "Authlib-1.0.0-py2.py3-none-any.whl", hash = "sha256:e8d589a886b5bcde64ebf961157bf619d613666ef6703822c06254c5b108b3e6"},
-    {file = "Authlib-1.0.0.tar.gz", hash = "sha256:2b13b4ba6465bdc46b89b1a07b2707c85b3434502d5a5fe202f5bdef8ebd5ac9"},
+    {file = "Authlib-1.0.1-py2.py3-none-any.whl", hash = "sha256:1286e2d5ef5bfe5a11cc2d0a0d1031f0393f6ce4d61f5121cfe87fa0054e98bd"},
+    {file = "Authlib-1.0.1.tar.gz", hash = "sha256:6e74a4846ac36dfc882b3cc2fbd3d9eb410a627f2f2dc11771276655345223b1"},
 ]
 bandit = [
     {file = "bandit-1.7.4-py3-none-any.whl", hash = "sha256:412d3f259dab4077d0e7f0c11f50f650cc7d10db905d98f6520a95a18049658a"},
@@ -1826,8 +1826,8 @@ pyparsing = [
     {file = "pyparsing-3.0.7.tar.gz", hash = "sha256:18ee9022775d270c55187733956460083db60b37d0d0fb357445f3094eed3eea"},
 ]
 pyright = [
-    {file = "pyright-1.1.231-py3-none-any.whl", hash = "sha256:f72068677ad4b249a066a3c4a2bb17d5f7a80a2dae80020bee2dd1a39c870794"},
-    {file = "pyright-1.1.231.tar.gz", hash = "sha256:1884300bc1d22b7828bc33c345822ca9625ecc7463d4cda4ae4be19880afd7de"},
+    {file = "pyright-1.1.239-py3-none-any.whl", hash = "sha256:0d3929aba6f8add95a303fd2c008ea9a0d91e0f0b782c6cf5a2b41ffef023769"},
+    {file = "pyright-1.1.239.tar.gz", hash = "sha256:a870792c6b194c98d096b58315ba781a2c994a328d3f6c38d1a7bcc61b9f215a"},
 ]
 pytest = [
     {file = "pytest-7.1.1-py3-none-any.whl", hash = "sha256:92f723789a8fdd7180b6b06483874feca4c48a5c76968e03bb3e7f806a1869ea"},
